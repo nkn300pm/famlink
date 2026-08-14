@@ -1,0 +1,43 @@
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0">Add Student</h4>
+                </div>
+                <div class="card-body">
+                    <form id="studentfrm" >                        
+                                              
+                        <div class="mb-3">
+                            <div class="form-floating">
+                            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" required>
+                            <label for="firstname" class="form-label">First Name</label>
+                        </div>
+                         </div>
+
+                        <div class="mb-3">
+                            <div class="form-floating">
+                            
+                            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required>
+                            <label for="lastname" class="form-label">Last Name</label>
+                            </div>
+                        </div>
+                        <input type="text" hidden name="parentfullname" id="parentfullname" >
+                        <input type="text" hidden name="parentid" id="parentid" >       
+
+                        <div class="mb-3">                                           
+                            
+                            <select class="form-select" id="schoolid" name="schoolid" required>
+                                <option disabled selected value="">Select a School</option>
+                                {{ range . }}
+                                    <option value="{{ .ID }}">{{ .Name }}</option>
+                                {{ end }}
+                            </select>                           
+                        </div>                             
+                        <!-- Submit -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                Add Student
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>

@@ -1,0 +1,32 @@
+{{range .}}
+<form id="ffrm">
+  <div class="row g-2 align-items-center">
+    <input hidden type="text" value="{{.Id}}" name="tid">
+    
+    <div class="col-auto form-floating {{if .Username.Valid}}border border-primary{{end}}">      
+      <input readonly type="text" name="tname" placeholder="User Name" class="form-control text-success" 
+      value="{{if .Username.Valid}}{{.Username.String}}{{else}}{{.First}}{{.Id}}{{end}}">
+      <label for="tname">Your User Name</label>
+    </div>
+    <div class="col-auto form-floating">      
+      <input type="text" readonly name="tfirst" placeholder="First Name" class="form-control"  value="{{.First}}">
+      <label for="tfirst">First Name</label>
+    </div>
+    <div class="col-auto form-floating">      
+      <input type="text" readonly name="tlast" placeholder="Last Name" class="form-control"  value="{{.Last}}">
+      <label for="tlast">Last Name</label>
+    </div>
+    <div class="col-auto form-floating">
+      <input type="text" class="form-control" name="tgrade" placeholder="Grade" value="{{if .Grade.Valid}}{{.Grade.String}}{{end}}">
+      <label for="tgrade">Grade</label>
+    </div>
+    <div class="col-auto">
+     
+      <button type="submit" class="btn btn-primary" {{if .Username.Valid}}hidden{{end}}>
+        Save
+      </button>
+    </div>
+  </div>
+</form>
+<hr style="color:red"/>
+ {{end}}

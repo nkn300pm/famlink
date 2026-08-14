@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap 5 CSS (correct CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        body {
+    /* Replace with your image URL */
+    background: url('/static/new2026.png') no-repeat center center / cover fixed;  
+    
+    }
+    div {
+        opacity: 0.94;
+    }
+    </style>
+</head>
+<body class="pt-5">
+    <nav class="navbar navbar-dark bg-dark fixed-top shadow">
+        <div class="container-fluid">
+          <a class="navbar-brand fw-bold fs-4" href="/" >
+            Famlink
+          </a>
+        </div>
+      </nav>
+<div class="container mt-5">    
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body" id="cbid">
+                    <h3 class="card-title text-center">Search</h3>  
+                    <form id="tfrm">           
+                 <div class="mb-3">  <select class="form-select" id="tsid" name="tsid" required>  
+                    <option disabled selected value="">Select Your School</option>   
+                    {{range .}}
+                    <option value="{{.ID}}">{{.Name}}</option>   
+                    {{end}}                        
+              </select></div>
+                                       
+                    <div class="mb-3">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="tfn" name="tfn" placeholder="First Name" required>
+                                <label for="tfn">First Name</label>
+                            </div>
+                        </div>                        
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="tln" name="tln" placeholder="Last Name" required>
+                            <label for="tln">Last Name</label>
+                         </div>
+                     </div>
+                     <div class="text-center"><button type="submit" id="tsc" class="btn btn-info">Get User Name</button></div>                                
+                    </form>
+                    <hr />
+                    <div class="text-success">Please specify grade. Choose a value among [TK, K, 1, 2, 3, 4, 5, 6]</div>
+                    <div>For MS or HS, use short forms like ELA, SS, PE, Bio, Chem, etc...</div>
+                    <p>Please click Save. Without saving, you're not found when logging in with the username.  Bordered Usernames are taken.</p>
+                  </form>      
+                 
+                </div>
+            </div>
+        </div> 
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>
+<script>
+  const tfrm = document.getElementById("tfrm");
+  const  cbid=document.getElementById("cbid");
+  var lc=null;
+
+  tfrm.addEventListener('submit',  async (e) => {
+    e.preventDefault();
+    if(lc){
+    lc.remove();
+  } 
+    const fdata=new FormData(tfrm);
+     const response=await fetch('/ts', {method: 'Post', body: fdata });
+     const data=await response.text();
+     if (response.ok) {       
+      lc=document.createElement("div");       
+       if (data !== "Not Found"){
+        lc.innerHTML= data;
+        const sct=document.createElement('script');
+        sct.setAttribute("src", 'static/teacher_ufrm.js');
+        lc.append(sct); 
+       }else{
+        lc.innerHTML=data + ".  Make sure correct information: school, first name, last name.";
+       }  
+       cbid.append(lc);
+     }else{
+        alert(data);
+     }
+    });
+</script>
+</body>
+</html>

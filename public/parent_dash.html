@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Welcome {{.ParentFullName}}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      overflow-x: hidden;
+      background: url('/static/new2026.png') no-repeat center center / cover fixed; 
+      opacity: 0.7;
+    }
+    .sidebar {
+      min-height: 100vh;
+    } 
+  </style>
+</head>
+<body>
+
+<!-- Top Navbar -->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
+    
+    <!-- Mobile toggle -->
+    <button class="btn btn-outline-light d-md-none me-2" 
+            type="button" 
+            data-bs-toggle="offcanvas" 
+            data-bs-target="#sidebarMenu">
+      ☰
+    </button>
+
+    <a class="navbar-brand" href="#">Famlink</a>
+    <span class="text-info">{{.ParentFullName}}</span>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- Sidebar (desktop) -->
+    <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar  p-3">
+     
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/add/students" id="asd">Add Student</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/us?pid={{.ParentId}}" title="Same School. Different Teacher." id="usd">Specify Teacher</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/ct?pid={{.ParentId}}" title="Same School. Different Teacher." id="ctd">Change Teacher</a>
+        </li>   
+        <li class="nav-item">
+          <a class="nav-link text-white" id="pd" href="">Parent's Page</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/cs?pid={{.ParentId}}" title="When your child attends new school." id="csd">Change School</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar (mobile offcanvas) -->
+    <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarMenu">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Sidebar</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="nav flex-column">  
+          <li class="nav-item">
+            <a class="nav-link text-white" id="asm" href="/add/students">Add Student</a>
+          </li>     
+          <li class="nav-item">
+            <a class="nav-link text-white" title="Same School. Different Teacher" id="usm" href="/us?pid={{.ParentId}}">Specify Teacher</a>
+          </li>        
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/ct?pid={{.ParentId}}" title="Same School. Different Teacher." id="ctm">Change Teacher</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" id="pm" href="">Parent's Page</a>
+          </li>    
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/cs?pid={{.ParentId}}" title="When your child attends new school." id="csm">Change School</a>
+          </li>       
+        </ul>
+      </div>
+    </div>
+ 
+   
+    <!-- Main Content -->
+    <main class="col-md-9 col-lg-10 ms-sm-auto px-md-4 py-4" id="main" data-parentid="{{.ParentId}}" data-parent-fullname="{{.ParentFullName}}">
+         <div class="row g-3">
+        <div class="col-md-9">
+          <div class="bg-light border rounded" id="box1">
+            <ul class="list-group">
+              {{range .Notis}}
+                <li class="list-group-item">
+                  <div class="d-flex justify-content-between">
+                    <strong>From: {{.TeacherFullName}}</strong>                    
+                    <strong>{{.StudentFullName}}</strong>
+                    <small class="text-muted">{{.CreatedAt.Format "2006-01-02 15:04:05"}}</small>
+                  </div>
+                  <div class="text-success">{{.Subj}}</div>
+                  <div style="color:orangered">{{.Message}}</div>
+                </li>
+              {{end}}
+            </ul>
+          </div>
+        </div>
+       
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+  function shared(u, scrt){
+    fetch(u)
+      .then(res => res.text())
+      .then(html => {    
+        const m =document.getElementById('box1');
+        m.innerHTML = html;
+        const s=document.createElement('script');
+        s.setAttribute("src", scrt);       
+       m.appendChild(s);
+      });
+  };
+
+ document.querySelectorAll('#asd, #asm').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault(); // stop full page reload
+    const url = this.getAttribute('href');  
+      shared(url, "static/addstudent.js") 
+
+  });
+}); 
+
+document.querySelectorAll('#usd, #usm').forEach(link  => {
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+    const url2 = this.getAttribute('href');   
+      shared(url2, "static/add_teachers.js")
+  });
+});
+
+document.querySelectorAll('#pd, #pm').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault(); // stop full page reload
+
+    //const url = this.getAttribute('href');
+    pid =document.getElementById("main").dataset.parentid;
+    pfn=document.getElementById("main").dataset.parentFullname;
+    fetch('/parents?pid='+ pid + "&pfn=" + pfn).then(res => res.text()).then(html => {    
+    document.getElementById('box1').innerHTML = html;
+  });
+  
+  });
+});
+
+document.querySelectorAll('#ctd, #ctm').forEach(link => {
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+    const url3=this.getAttribute('href');   
+    shared(url3, 'static/change_teachers.js')
+  })});
+
+  document.querySelectorAll('#csd, #csm').forEach(link => {
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+    const url3=this.getAttribute('href');  
+    shared(url3, 'static/change_school.js')
+  })});
+
+</script>
+</body>
+</html>

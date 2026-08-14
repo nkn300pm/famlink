@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Home</title>
+
+<!-- Bootstrap 5.2.3 CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+      div {
+        opacity: 0.8;
+    }
+
+  body {
+  background: url('/static/horse.jpg') no-repeat center center / cover fixed; 
+}</style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark fixed-top shadow">
+        <div class="container-fluid">
+          <a class="navbar-brand fw-bold fs-4" href="/">
+            Famlink
+          </a>
+        </div>
+      </nav>
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+
+    <div class="card shadow p-5 text-center" style="width: 400px;">
+        <h1 class="mb-4">Welcome to Famlink</h1>
+        <h2 class="mb-4">{{.}}</h2>
+        <p class="text-muted mb-4">Please choose an option</p>
+
+        <div class="d-grid gap-3">
+            <a href="/register" class="btn btn-primary btn-lg">Register</a>
+            <a href="/login" class="btn btn-outline-secondary btn-lg">Login</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

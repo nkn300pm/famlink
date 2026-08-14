@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    div { opacity: 0.9;}
+body {
+    /* Replace with your image URL */
+    background: url('/static/horse.jpg') no-repeat center center / cover fixed; 
+  }</style>
+
+<body class="bg-light">
+
+    <div class="container py-5">
+        <h2 class="mb-4" id="hname"><span class="text-success">{{.DistrictName}}</span> Administration</h2>
+        
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+            <li class="nav-item"><button class="nav-link active" id="districts-tab" data-bs-toggle="tab" data-bs-target="#districts" type="button" role="tab">District</button></li>
+            <li class="nav-item"><button class="nav-link" id="schools-tab" data-bs-toggle="tab" data-bs-target="#schools" type="button" role="tab">Schools</button></li>
+            <li class="nav-item"><button class="nav-link" id="teachers-tab" data-bs-toggle="tab" data-bs-target="#teachers" type="button" role="tab">Teachers</button></li>
+        </ul>
+    
+        <div class="tab-content border border-top-0 bg-white p-4 shadow-sm" id="adminTabsContent">
+            <!-- Districts Tab -->
+            <div class="tab-pane fade show active" id="districts" role="tabpanel" aria-labelledby="districts-tab">
+                <h4 class="mb-3">Set District's Name</h4>
+                <form action="/admin/district/add" method="POST" id="districtForm">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="text" name="dname" value="{{.DistrictName}}" class="form-control" id="dname" placeholder="" required>
+                                <label for="dname">District Name</label>
+                            </div>
+                        </div>                      
+                        <div class="col-md-2 d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary w-100 py-3">Save</button>
+                        </div>
+                    </div>
+                </form>
+                <h4 class="mb-3">Set Admin Password</h4>
+                <form method="POST" id="apForm">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="text" name="ap" class="form-control" id="ap" placeholder="" required>
+                                <label for="ap">Admin Pass</label>
+                            </div>
+                        </div>
+                      
+                        <div class="col-md-2 d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary w-100 py-3">Save</button>
+                        </div>
+                    </div>
+                </form>
+                <h4 class="mb-3">Set Teacher Password</h4>
+                <form method="POST" id="tpForm">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="text" name="tp" class="form-control" id="tp" placeholder="" required>
+                                <label for="tp">Teacher Pass</label>
+                            </div>
+                        </div>
+                      
+                        <div class="col-md-2 d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary w-100 py-3">Save</button>
+                        </div>
+                    </div>
+                </form>
+                <br />
+                <span class="text-info" id="storeok"></span>           
+            </div>
+    
+            <!-- Schools Tab -->
+            <div class="tab-pane fade" id="schools" role="tabpanel" aria-labelledby="schools-tab">
+                <h6 class="mb-3">Add School</h4>
+                <form action="/admin/school/add" method="POST" class="mb-4" id="schoolForm">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="text" name="schName" class="form-control" id="schName" placeholder="School Name" required>
+                                <label for="schName">School Name</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2 d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary w-100 py-3">Add School</button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <h6 class="mb-3">Bulk Upload Schools. In the file, each school is on a line.</h6>
+                <form action="/admin/school/upload" method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <input type="file" name="schUploadFile" class="form-control" required>
+                        <button class="btn btn-outline-secondary" type="submit">Upload Schools</button>
+                    </div>
+                </form>
+                <h4 class="mt-4">Existing Schools</h4>
+                <table class="table table-striped mt-2">
+                    <thead>
+                        <tr>   
+                            <th>ID</th>                         
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="schoolBody">  
+                                         
+                    </tbody>
+                </table>
+            </div>
+    
+            <!-- Teachers Tab -->
+            <div class="tab-pane fade" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
+                
+                <div class="col-md-4">
+                   <h5 class="text-success">Remember to select a school either manually add or bulk upload!</h5>
+                    <select class="form-select" id="schoolId">
+                      
+                    </select>
+                  </div>
+                <hr/>
+                <h4 class="mb-3">Add Teacher</h4>            
+           
+             
+                <form action="/admin/teacher/add" method="POST" class="mb-4">
+                    <div class="row g-3">
+                                              
+                        <div class="col-md-4"><div class="form-floating"><input type="text" name="tfirst" class="form-control" id="tfirst" placeholder="First Name" required><label for="tFirst">First Name</label></div></div>
+                        <div class="col-md-4"><div class="form-floating"><input type="text" name="tlast" class="form-control" id="tlast" placeholder="Last Name" required><label for="tLast">Last Name</label></div></div>
+                    
+                        <input  value="" hidden name="tschoolid"  id='tschoolid'>
+                        <div class="col-12"><button type="submit" class="btn btn-success w-100 py-2">Add Teacher Manually</button></div>
+                    </div>
+                </form>
+                <hr>
+                <h4 class="mb-3">Bulk Upload Teachers (CSV)</h4>
+                <h5 class="text-success">Each line has format: First Name, Last Name</h5>
+                <form action="/admin/teachers/upload" method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <input type="file" name="csvfile" class="form-control"  required>
+                        <input  value="" hidden name="tschoolid2"  id='tschoolid2'>
+                        <button class="btn btn-outline-secondary" type="submit">Upload CSV</button>
+                    </div>
+                </form>     
+                <div class="mb-3">    
+                    <hr />
+                    <h4 class="mb-3">Added Teachers</h4>
+                    <select name="added_teachers" class="form-select" id="added_teachers">    
+                        <option value="">Select a School</option>                  
+                        {{range .AddedSchools}}
+                            <option value="{{.Id}}">{{.Name}} ({{.Count}})</option>                        
+                        {{end}}
+                    </select>
+                </div>
+                <div class="mb-3">                                           
+                            
+                    <select class="form-select" id="teachersbyschool" name="teachersbyschool" required>                            
+                    </select>                           
+                </div>
+        
+            </div>
+       
+        </div>
+    </div>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+
+</script>
+<script>
+// Target the Schools tab button
+select = document.getElementById("schoolId");
+select.addEventListener('change', () => {
+        document.getElementById('tschoolid').value = select.value;     
+        document.getElementById('tschoolid2').value = select.value;      
+    });
+
+let schoolsTabBtn = document.getElementById('schools-tab');
+let schoolData = [];
+
+schoolsTabBtn.addEventListener('click', async () => {
+    try{
+       document.getElementById('schoolId').innerHTML='';              
+        await fetchSchoolData();
+        renderSchools('schoolBody');      
+    } catch(e) {}    
+});
+
+ async function fetchSchoolData(){
+    rsp = await fetch('/admin/getschools');
+    schoolData=await rsp.json();    
+    if (!Array.isArray(schoolData)) {
+            schoolData = [];
+    }; 
+}
+document.getElementById('teachers-tab').addEventListener('click', async () => {       
+    document.getElementById('schoolBody').innerHTML='';             
+    await fetchSchoolData();     
+    select.innerHTML="<option disabled selected>Select a school</option>";    
+ 
+        schoolData.forEach(s => {
+        const option = document.createElement("option");
+        option.value = s.ID;       // use school ID as value
+        option.textContent = s.Name;
+        select.appendChild(option);
+    });    
+});
+
+document.getElementById('apForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    apform=e.target;
+    formData = new FormData(apform);
+    try{
+        const response = await fetch('/admin/district/ap', {
+            method: 'POST',
+            body: formData 
+        });
+        if (response.ok){
+            document.getElementById("storeok").innerText="Admin Password saved sucessfully";
+        }
+    }catch {}
+});
+
+document.getElementById('tpForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    tpform=e.target;
+    formData = new FormData(tpform);
+    try{
+        const response = await fetch('/admin/district/tp', {
+            method: 'POST',
+            body: formData 
+        });
+        if (response.ok){
+            document.getElementById("storeok").innerText="Teacher Password saved sucessfully";
+        }
+    }catch {}
+});
+
+document.getElementById('districtForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Stop page reload
+
+    const form = e.target;
+    const formData = new FormData(form);
+    
+    try {
+        const response = await fetch('/admin/district/add', {
+            method: 'POST',
+            body: formData // Go's r.FormValue handles FormData automatically
+        });
+
+        if (response.ok) {
+            // 1. Get the values from the form        
+            
+            document.getElementById("hname").innerHTML= '<span class="text-success">' + formData.get('dname') + '</span>' + " Administration";
+            document.getElementById("storeok").innerText="Sucess";
+
+           
+        } else {
+            alert('Failed to add district. Check if the ID already exists.');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+document.getElementById("added_teachers").addEventListener('change', (e) => {
+    e.preventDefault();
+    l=e.target;
+    sid = l.selectedOptions? l.selectedOptions[0].value: l.options[l.selectedIndex].value;   
+    try{
+         fetch('/byschool_teachers?schoolid=' + sid ).then(resp => resp.text()).then(html => {
+            
+            document.getElementById('teachersbyschool').innerHTML = html;
+         })
+
+
+    }catch(error) { alert(error)};
+    
+});
+
+document.getElementById('schoolForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Stop page reload
+
+    const form = e.target;
+    const formData = new FormData(form);
+    
+    try {
+           const response = await fetch('/admin/school/add', {
+            method: 'POST',
+            body: formData // Go's r.FormValue handles FormData automatically
+        });
+
+        if (response.ok) {
+           const newid = await response.text();
+           const name = formData.get('schName');
+
+            // 2. Add row to the table
+            const schoolBody = document.getElementById('schoolBody');
+            const newRow = schoolBody.insertRow(); // Adds to the end            
+            newRow.innerHTML = `<td>${newid}</td><td>${name}</td>`;               
+   
+             schoolData.push({ID: newid,  Name: name});
+        } else {
+            alert('Failed to add school.');
+        }
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+
+function renderSchools(tbodyId) {
+  if (schoolData != null) {
+    tbody = document.getElementById(tbodyId);  
+  tbody.innerHTML = schoolData.map(s => `
+    <tr>
+      <td>${s.ID}</td>
+      <td>${s.Name}</td>
+    </tr>
+  `).join("");
+  }
+
+}
+</script>
+</body>
+</html>

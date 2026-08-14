@@ -1,0 +1,33 @@
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h4 class="mb-0">Change School</h4>
+        <h4 class="mb-0">After that, click Specify Teacher</h4>
+    </div>
+    <div class="card-body">
+        <form id="csfrm" >                        
+                   
+            <div class="mb-3">
+                <h5>Select a Student</h5>
+                <select class="form-select" id="stutid" name="stutid" required>
+                    <option disabled selected value="">Select a Student</option>
+                    {{ range . }}
+                        <option value="{{ .Id }}" data-oldschoolid="{{.SchoolId}}">{{ .First }} {{.Last}} -- {{.SchoolName}}</option>
+                    {{ end }}
+                </select>   
+            </div>
+                   <div class="mb-3">                                           
+                
+                <select class="form-select" id="scuid" name="scuid" required>                   
+                 
+                </select>                           
+            </div>                             
+            <!-- Submit -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">
+                    Change School
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

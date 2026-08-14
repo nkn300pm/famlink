@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        body {
+    background: url('/static/running.png') no-repeat center center / cover fixed;
+    opacity: 0.7;    
+    }
+    </style>    
+</head>
+<body class="pt-5" data-tid="{{.LoginTeacher.Id}}">
+    <nav class="navbar navbar-dark bg-dark fixed-top shadow">
+        <div class="container-fluid">
+          <a class="navbar-brand fw-bold fs-4" href="/">
+            Famlink
+          </a>
+        </div>
+      </nav>
+<div class="container mt-5">
+    <h1 class="text-center" style="color:orangered">{{.District}}</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <h4 class="mb-0 text-center">{{.LoginTeacher.First}} {{.LoginTeacher.Last}}</h4>
+                    <a href="" id="mhid">Message History</a><br/>
+                    <a href="/ds?tid={{.LoginTeacher.Id}}">Unsubscribe Students</a><br/>
+                    <a href="" id="udg">Update Grade</a>
+                    
+                </div>
+                <div class="card-body">
+                    <form id="msgfrm">
+                        <input type="hidden" name="teacherid" value="{{.LoginTeacher.Id}}">
+                    <div class="mb-3">                               
+                        <h5>Select a Student</h5>
+                        <select class="form-select" id="parentid" name="parentid" required>
+                            <option value="" disabled selected>Select a student</option>
+                            {{ range .Students }}
+                                <option value="{{.ParentId}}">{{.First }} {{.Last}} [{{.ParentFullName}}]</option>
+                            {{ end }}
+                        </select>                           
+                    </div>
+                    <input type="hidden" id="teacher_fullname" name="teacher_fullname" value="{{.LoginTeacher.First}} {{.LoginTeacher.Last}}" />
+                    <input type="text" hidden id="sfame" name="sfame">                
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="subj" name="subj" maxlength="100" required>
+                        <label for="subj">Subject up to 100 characters</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="Enter your message" id="message" name="message" style="height: 200px" minlength="5"></textarea>
+                        <label for="message">Enter your message</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" hidden id="msg_his">
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <h5>Notification History</h5>
+                </div>
+                <div class="card-body" id="msgy">     
+                    <div id="stat" class="text-info"></div>  
+                    <div class="list-group list-group-flush" id="msglist" title="Only save when change.">
+
+                    </div>             
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script>
+    const gsm=document.getElementById('msgfrm');
+    const mhcol=document.getElementById('msg_his');
+    const mglist=document.getElementById('msglist');
+
+    gsm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+       
+        const smsg = gsm.elements["message"].value.trim();
+        if (smsg.length < 5){
+            alert('Message should have at least 5 characters.');
+            return;
+        };
+
+       const sel = gsm.elements["parentid"];
+       const txt=sel.options[sel.selectedIndex].text;
+       sname=txt.substring(0, txt.indexOf("["));
+        gsm.elements["sfame"].value=sname; 
+        sname = gsm.elements["sfame"].value;
+        subj=gsm.elements["subj"].value;
+        gsm.elements["message"].value=smsg;
+        const fdata=new FormData(gsm);
+        const res= await fetch('/message', {method: 'Post', body: fdata });
+        
+
+        if (res.ok){           
+          //get msghis
+          const newn=document.createElement('div');
+          newn.innerHTML =`<a class="list-group-item list-group-item-action border-0"><h6 class="mb-1">${sname}</h6><div class="text-muted">Recently Created</div><div class='text-success'>${subj}</div></a><textarea class="form-control" rows="5" style="color:orangered">${smsg}</textarea>`;
+          mglist.insertBefore(newn, mglist.firstElementChild);
+          mhcol.hidden=false;
+          gsm.reset();
+          document.getElementById('stat').innerHTML='';
+        }
+        
+
+    });
+
+    document.getElementById("parentid").addEventListener("change", (e) => {
+        select = e.target;
+       const selected_item = select.selectedOptions? select.selectedOptions[0]: select.options[select.selectedIndex];
+        studentname = selected_item.text;       
+        tf=document.getElementById("msgfrm");
+        tf.elements['sfame'].value = studentname; 
+
+    });
+    document.getElementById('mhid').addEventListener('click', function(e){
+        e.preventDefault();
+        document.getElementById('stat').innerHTML='';
+        mhcol.hidden=false;
+        fetch('/mhis?tid='+ document.body.dataset.tid).then(res => res.text()).then(html => {            
+           
+            mglist.innerHTML=html;
+            const ms =document.createElement('script');
+            ms.setAttribute('src', 'static/showmhis.js');
+            mglist.appendChild(ms);            
+        });
+    });
+
+    document.getElementById('udg').addEventListener('click', function(e){
+        e.preventDefault();
+        const parent=e.target.parentElement;
+        if(parent.lastElementChild.id == 'udg'){
+            fetch('/udg?tid='+ document.body.dataset.tid).then(res => res.text()).then(html => {            
+          const gf=document.createElement('div');
+          gf.id="uf";
+          gf.innerHTML=html;
+          const cs =document.createElement('script');
+          cs.setAttribute('src', 'static/update_grade.js');
+          gf.appendChild(cs);
+          parent.appendChild(gf); 
+                      
+       });
+
+        }
+        
+
+
+    });
+ 
+ 
+</script>
+
+</body>
+</html>

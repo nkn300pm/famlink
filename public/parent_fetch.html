@@ -1,0 +1,13 @@
+<ul class="list-group">
+    {{range .Notis}}
+      <li class="list-group-item">
+        <div class="d-flex justify-content-between">
+          <strong>From: {{.TeacherFullName}}</strong>                    
+          <strong>{{.StudentFullName}}</strong>
+          <small class="text-muted">{{.CreatedAt.Format "2006-01-02 15:04:05"}}</small>
+        </div>
+        <div class="text-success">{{.Subj}}</div>
+        <div style="color:orangered">{{.Message}}</div>
+      </li>
+    {{end}}
+  </ul>

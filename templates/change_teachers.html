@@ -1,0 +1,33 @@
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h4 class="mb-0">Change Teacher</h4>
+    </div>
+    <div class="card-body">
+        <form id="cfrm" > 
+           <input type="hidden" id="otid" name="otid" >
+            <div class="mb-3">               
+                <select class="form-select" id="ssid" name="ssid" required>
+                    <option disabled selected value="">Select a Student</option>
+                    {{ range . }}
+                        <option value="{{ .Sid }}" data-schoolid="{{.Schoolid}}" data-oldtid="{{.Tid}}">{{ .Sname }} -- {{if .Tgrade.Valid}}{{.Tname}}. Grade: {{.Tgrade.String}}{{else}}{{.Tname}}{{end}}
+                        </option>
+                    {{ end }}
+                </select>                           
+            </div>
+          
+                 <div class="mb-3">                                           
+                
+                <select class="form-select" id="ttid" name="ttid" required>                            
+                </select>                           
+            </div>
+            <!-- Submit -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">
+                    Change Teacher
+                </button>
+            </div>
+           
+        </form> 
+        
+    </div>
+</div>

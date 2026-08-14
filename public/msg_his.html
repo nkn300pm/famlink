@@ -1,0 +1,15 @@
+{{range .}}
+<div id="v{{.ID}}">
+    <a href="" class="list-group-item list-group-item-action border-0" id="m{{.ID}}">                            
+        <div class="d-flex w-100">                                
+            <h6 class="mb-1">{{.StudentFullName}}</h6>
+            <small class="text-muted">{{.CreatedAt.Format "2006-01-02 15:04:05"}}</small>
+            <h6 class="mb-1 text-success">{{.Subject}}</h6>
+            <a href="" id="e_{{.ID}}" hidden>Save</a>&nbsp;<a href="" id="d_{{.ID}}">Del</a>                           
+        </div>                                           
+    </a>
+    <form id="f_{{.ID}}">
+        <textarea class="form-control" rows="5" name="a_{{.ID}}" id="a_{{.ID}}" style="color:orangered" hidden minlength="5"></textarea>
+    </form>  
+</div>
+{{end}}

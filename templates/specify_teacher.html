@@ -1,0 +1,32 @@
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h4 class="mb-0">Specify Teacher</h4>
+        <div>Parent specifies teacher(s) for your child.</div>
+    </div>
+    <div class="card-body">
+        <form id="sfrm" > 
+        
+            <div class="mb-3">               
+                <select class="form-select" id="stid" name="stid" required>
+                    <option disabled selected value="">Select a Student</option>
+                    {{ range . }}
+                        <option value="{{ .Id }}" data-sid="{{.Sid}}">{{ .Name }}</option>
+                    {{ end }}
+                </select>                           
+            </div>
+                 <div class="mb-3">                                           
+                
+                <select class="form-select" id="tid" name="tid" required>                            
+                </select>                           
+            </div>
+            <!-- Submit -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">
+                    Specify Teacher
+                </button>
+            </div>
+            <p id="stat"></p>
+        </form> 
+        
+    </div>
+</div>

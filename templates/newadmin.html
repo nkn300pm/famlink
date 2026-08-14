@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<img src='static/horse.jpg' ></img>
+    <div class="container py-5">
+        <h2 class="mb-4">School District Administration</h2>
+        
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+            <li class="nav-item"><button class="nav-link active" id="districts-tab" data-bs-toggle="tab" data-bs-target="#districts" type="button" role="tab">Districts</button></li>
+            <li class="nav-item"><button class="nav-link" id="schools-tab" data-bs-toggle="tab" data-bs-target="#schools" type="button" role="tab">Schools</button></li>
+            <li class="nav-item"><button class="nav-link" id="teachers-tab" data-bs-toggle="tab" data-bs-target="#teachers" type="button" role="tab">Teachers</button></li>
+        </ul>
+    
+        <div class="tab-content border border-top-0 bg-white p-4 shadow-sm" id="adminTabsContent">
+            <!-- Districts Tab -->
+            <div class="tab-pane fade show active" id="districts" role="tabpanel" aria-labelledby="districts-tab">
+                <h4 class="mb-3">Add District</h4>
+                <form action="/admin/district/add" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="text" name="id" class="form-control" id="distID" placeholder="District ID" required>
+                                <label for="distID">District ID</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" name="name" class="form-control" id="distName" placeholder="District Name" required>
+                                <label for="distName">District Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary w-100 py-3">Add</button>
+                        </div>
+                    </div>
+                </form>
+                
+                <h4 class="mt-4">Existing Districts</h4>
+                <table class="table table-striped mt-2">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .Districts}}
+                        <tr>
+                            <td>{{.ID}}</td>
+                            <td>{{.Name}}</td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="2" class="text-center">No districts found.</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+    
+            <!-- Schools Tab -->
+            <div class="tab-pane fade" id="schools" role="tabpanel" aria-labelledby="schools-tab">
+                <h4 class="mb-3">Add Schools</h4>
+                <form action="/admin/school/add" method="POST" class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="text" name="id" class="form-control" id="schID" placeholder="School ID" required>
+                                <label for="schID">School ID</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="text" name="name" class="form-control" id="schName" placeholder="School Name" required>
+                                <label for="schName">School Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="text" name="districtid" class="form-control" id="schDistID" placeholder="District ID" required>
+                                <label for="schDistID">District ID</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary w-100 py-3">Add</button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                <h6>Bulk Upload Schools (CSV)</h6>
+                <form action="/admin/school/upload" method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <input type="file" name="csvfile" class="form-control" accept=".csv" required>
+                        <button class="btn btn-outline-secondary" type="submit">Upload CSV</button>
+                    </div>
+                </form>
+            </div>
+    
+            <!-- Teachers Tab -->
+            <div class="tab-pane fade" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
+                <h4 class="mb-3">Add Teacher</h4>
+                <form action="/admin/teacher/add" method="POST" class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-4"><div class="form-floating"><input type="text" name="id" class="form-control" id="tID" placeholder="ID" required><label for="tID">Teacher ID</label></div></div>
+                        <div class="col-md-4"><div class="form-floating"><input type="text" name="signin" class="form-control" id="tUser" placeholder="Username" required><label for="tUser">Username</label></div></div>
+                        <div class="col-md-4"><div class="form-floating"><input type="password" name="password" class="form-control" id="tPass" placeholder="Password" required><label for="tPass">Password</label></div></div>
+                        <div class="col-md-4"><div class="form-floating"><input type="text" name="firstname" class="form-control" id="tFirst" placeholder="First Name" required><label for="tFirst">First Name</label></div></div>
+                        <div class="col-md-4"><div class="form-floating"><input type="text" name="lastname" class="form-control" id="tLast" placeholder="Last Name" required><label for="tLast">Last Name</label></div></div>
+                        <div class="col-md-4"><div class="form-floating"><input type="text" name="schoolid" class="form-control" id="tSchID" placeholder="School ID" required><label for="tSchID">School ID</label></div></div>
+                        <input type="hidden" name="role" value="teacher">
+                        <div class="col-12"><button type="submit" class="btn btn-success w-100 py-2">Add Teacher Manually</button></div>
+                    </div>
+                </form>
+                <hr>
+                <h6>Bulk Upload Teachers (CSV)</h6>
+                <form action="/admin/teacher/upload" method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <input type="file" name="csvfile" class="form-control" accept=".csv" required>
+                        <button class="btn btn-outline-secondary" type="submit">Upload CSV</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

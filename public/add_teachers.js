@@ -5,15 +5,12 @@ document.getElementById("stid").addEventListener('change', (e) => {
     const list=e.target;
    const s= list.options[list.selectedIndex];
    schoolid=s.dataset.sid;
-   sstudent = s.text;  
- 
+   sstudent = s.text;   
        try{
         fetch('/changableTeachers?schoolid=' + schoolid + '&stuid=' + s.value).then(resp => resp.text()).then(html => {
            shtml = '<option value="" disabled selected>Select a teacher</option>' + html;
            document.getElementById('tid').innerHTML = shtml;
         })
-
-
 }catch(error) { alert(error)};
 
 });

@@ -30,8 +30,7 @@ document.querySelectorAll('a[id^="d_"]').forEach(item => {
             if (response.ok){          
                 document.getElementById('v'+did).remove();
             }
-        }catch{};       
-
+        }catch{};      
     });
 });
 

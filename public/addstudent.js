@@ -8,7 +8,6 @@ document.getElementById('studentfrm').addEventListener('submit',
         try { 
             response = await fetch('/add/students', { method: 'POST', body: formData}); 
             data = await response.text();
-
             if (response.ok) { 
                const box1= document.getElementById('box1');
                const child = document.createElement('div');

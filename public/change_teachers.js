@@ -6,7 +6,6 @@ document.getElementById("ssid").addEventListener('change', (e) => {
    scuid=so.dataset.schoolid;
    oldtid=so.dataset.oldtid;
   sname = so.text.split('--')[0];
-
   document.getElementById('otid').value=oldtid;
 
    try{

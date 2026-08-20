@@ -9,8 +9,7 @@
     <style>
         body {
         background: url('/static/running.png') no-repeat center center / cover fixed;  opacity: 0.7;    
-    }
- 
+    } 
     </style>
 </head>
 <body class="pt-5">
@@ -29,22 +28,19 @@
                 <div class="card-body">
                     <h3 class="card-title text-center">Login</h3>
                     <form action="/teachers" method="POST">
-                        <!-- Email Input -->
-                        <div class="mb-3">
+                       <div class="mb-3">
                             <div class="form-floating">
                                 <input type="text" value="{{.Username}}" class="form-control" id="username" name="username" placeholder="User Name" required>  
                                 <label for="username">User Name</label>                            
                             </div>
-                        </div>
-                             
+                        </div>                             
                         <div class="mb-3">
                             <div class="form-floating">
                                 <input type="password" class="form-control" id="password" name="password" placeholder="password" required>   
                                 <label for="password">Password</label>                              
                             </div>
                         </div>
-                        <!-- Submit Button -->
-                        <div class="mb-3 text-center">
+                       <div class="mb-3 text-center">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
                         <div>{{.Error}}</div>

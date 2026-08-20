@@ -97,8 +97,7 @@
         subj=gsm.elements["subj"].value;
         gsm.elements["message"].value=smsg;
         const fdata=new FormData(gsm);
-        const res= await fetch('/message', {method: 'Post', body: fdata });
-        
+        const res= await fetch('/message', {method: 'Post', body: fdata });        
 
         if (res.ok){           
           //get msghis
@@ -108,8 +107,7 @@
           mhcol.hidden=false;
           gsm.reset();
           document.getElementById('stat').innerHTML='';
-        }
-        
+        }       
 
     });
 
@@ -150,13 +148,7 @@
        });
 
         }
-        
-
-
     });
- 
- 
 </script>
-
 </body>
 </html>

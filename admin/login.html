@@ -16,7 +16,6 @@
       background: url('/static/horse.jpg')  center center fixed;
       background-size: cover;
     }
-
     .login-card {
       backdrop-filter: blur(10px);
       background: rgba(255, 255, 255, 0.85);
@@ -27,24 +26,18 @@
   </style>
 </head>
 <body>
-
   <div class="d-flex justify-content-center align-items-center h-100">
     <div class="login-card col-10 col-sm-8 col-md-4">
-
       <h4 class="text-center mb-4">Enter Password</h4>
-
       <form action="/admin" method="Post">
         <div class="mb-3">
           <input type="password" class="form-control form-control-lg" placeholder="Password" name="password" id="password" required>
         </div>
-
         <div class="d-grid">
           <button type="submit" class="btn btn-primary btn-lg">Log In</button>
         </div>
       </form>
-
     </div>
   </div>
-
 </body>
 </html>

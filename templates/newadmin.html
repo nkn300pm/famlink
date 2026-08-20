@@ -9,9 +9,7 @@
 <body class="bg-light">
 <img src='static/horse.jpg' ></img>
     <div class="container py-5">
-        <h2 class="mb-4">School District Administration</h2>
-        
-        <!-- Tab Navigation -->
+        <h2 class="mb-4">School District Administration</h2>        
         <ul class="nav nav-tabs" id="adminTabs" role="tablist">
             <li class="nav-item"><button class="nav-link active" id="districts-tab" data-bs-toggle="tab" data-bs-target="#districts" type="button" role="tab">Districts</button></li>
             <li class="nav-item"><button class="nav-link" id="schools-tab" data-bs-toggle="tab" data-bs-target="#schools" type="button" role="tab">Schools</button></li>
@@ -19,7 +17,6 @@
         </ul>
     
         <div class="tab-content border border-top-0 bg-white p-4 shadow-sm" id="adminTabsContent">
-            <!-- Districts Tab -->
             <div class="tab-pane fade show active" id="districts" role="tabpanel" aria-labelledby="districts-tab">
                 <h4 class="mb-3">Add District</h4>
                 <form action="/admin/district/add" method="POST">
@@ -40,8 +37,7 @@
                             <button type="submit" class="btn btn-primary w-100 py-3">Add</button>
                         </div>
                     </div>
-                </form>
-                
+                </form>                
                 <h4 class="mt-4">Existing Districts</h4>
                 <table class="table table-striped mt-2">
                     <thead>
@@ -63,10 +59,8 @@
                         {{end}}
                     </tbody>
                 </table>
-            </div>
-    
-            <!-- Schools Tab -->
-            <div class="tab-pane fade" id="schools" role="tabpanel" aria-labelledby="schools-tab">
+            </div>    
+          <div class="tab-pane fade" id="schools" role="tabpanel" aria-labelledby="schools-tab">
                 <h4 class="mb-3">Add Schools</h4>
                 <form action="/admin/school/add" method="POST" class="mb-4">
                     <div class="row g-3">
@@ -101,8 +95,7 @@
                         <button class="btn btn-outline-secondary" type="submit">Upload CSV</button>
                     </div>
                 </form>
-            </div>
-    
+            </div>    
             <!-- Teachers Tab -->
             <div class="tab-pane fade" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
                 <h4 class="mb-3">Add Teacher</h4>

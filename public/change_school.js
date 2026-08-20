@@ -5,9 +5,7 @@ document.getElementById("csfrm").addEventListener('submit', async (e) => {
     fdt = new FormData(f);
     const purl=document.getElementById("csd");
     const sdent= document.getElementById("stutid");
-    const sitem= sdent.options[sdent.selectedIndex];      
-
-
+    const sitem= sdent.options[sdent.selectedIndex];   
     try{
         const response = await fetch(purl.getAttribute("href") + "&oldschoolid="+ sitem.dataset.oldschoolid, {
             method: 'POST',
@@ -19,14 +17,12 @@ document.getElementById("csfrm").addEventListener('submit', async (e) => {
             const sschool=newscu.options[newscu.selectedIndex];
             const newsname=sschool.text;
             alert("Successfully changed to " + newsname); 
-            sitem.setAttribute("data-oldschoolid", sschool.value);               
-        
+            sitem.setAttribute("data-oldschoolid", sschool.value);              
                        
             const sname=sitem.text.split(" -- ")[0];
             sitem.text = sname + " -- " + newsname;           
             newscu.innerHTML="";  
-            sdent.selectedIndex=0;
-           
+            sdent.selectedIndex=0;           
         }else{
             alert(data);
         }
@@ -38,15 +34,9 @@ document.getElementById("stutid").addEventListener('change', (e) => {
     const slist=e.target;
    const so= slist.options[slist.selectedIndex];
    chid=so.value;
-
    try{
-    fetch('/changable_school?sid=' + chid).then(resp => resp.text()).then(html => {
-       
+    fetch('/changable_school?sid=' + chid).then(resp => resp.text()).then(html => {       
        document.getElementById('scuid').innerHTML = html;
     })
-
-
 }catch(error) { alert(error)};
-
-
 });

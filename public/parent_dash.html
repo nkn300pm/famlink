@@ -17,12 +17,8 @@
   </style>
 </head>
 <body>
-
-<!-- Top Navbar -->
 <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-  <div class="container-fluid">
-    
-    <!-- Mobile toggle -->
+  <div class="container-fluid">  
     <button class="btn btn-outline-light d-md-none me-2" 
             type="button" 
             data-bs-toggle="offcanvas" 
@@ -37,10 +33,8 @@
 
 <div class="container-fluid">
   <div class="row">
-
     <!-- Sidebar (desktop) -->
-    <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar  p-3">
-     
+    <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar  p-3">     
       <ul class="nav flex-column">
         <li class="nav-item">
           <a class="nav-link text-white" href="/add/students" id="asd">Add Student</a>
@@ -59,7 +53,6 @@
         </li>
       </ul>
     </nav>
-
     <!-- Sidebar (mobile offcanvas) -->
     <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarMenu">
       <div class="offcanvas-header">
@@ -85,9 +78,7 @@
           </li>       
         </ul>
       </div>
-    </div>
- 
-   
+    </div>   
     <!-- Main Content -->
     <main class="col-md-9 col-lg-10 ms-sm-auto px-md-4 py-4" id="main" data-parentid="{{.ParentId}}" data-parent-fullname="{{.ParentFullName}}">
          <div class="row g-3">
@@ -114,10 +105,8 @@
 
   </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-
   function shared(u, scrt){
     fetch(u)
       .then(res => res.text())

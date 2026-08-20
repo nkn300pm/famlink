@@ -640,6 +640,7 @@ func specifyTeacherHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodPost {
+
 		studentid := r.FormValue("stid")
 		teacherid := r.FormValue("tid")
 		schoolid := r.URL.Query().Get("schoolid")
@@ -654,6 +655,7 @@ func specifyTeacherHandler(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte("Already added the teacher."))
 				return
 			}
+
 			w.Write([]byte("Error"))
 
 		} else {

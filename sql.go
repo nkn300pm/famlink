@@ -10,7 +10,7 @@ import (
 
 func GetCon() (*sql.DB, error) {
 	
-	db, err := sql.Open("mysql", "famlink:balance_shaft@/famlink?parseTime=true&loc=Local")
+	db, err := sql.Open("mysql", "username:password@/famlink?parseTime=true&loc=Local")
 	return db, err
 }
 

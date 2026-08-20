@@ -41,7 +41,8 @@ CREATE TABLE students_teachers (
 	id INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	sid INT UNSIGNED NOT NULL,
 	tid INT UNSIGNED NOT NULL,
-	UNIQUE (sid, tid)
+	schoolid INT UNSIGNED NOT NULL,
+	UNIQUE (sid, tid, schoolid)
 );
 
 CREATE TABLE notifications ( 
